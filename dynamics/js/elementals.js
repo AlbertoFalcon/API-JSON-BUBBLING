@@ -11,6 +11,7 @@ const muteBtn = document.getElementById("muteBtn");
 
 const vidDuration = document.getElementById("duration");
 const currentTimeSpan = document.getElementById("currentTime");
+let currentVolume
 
 function onPlayerReady(event) {
     duration = player.getDuration();
@@ -23,12 +24,11 @@ function onPlayerReady(event) {
 
     updateInterval = setInterval(() => {
         if (player && player.getPlayerState() === YT.PlayerState.PLAYING) {
-            const current = player.getCurrentTime();
-            seekBar.value = current;
+            seekBar.value = player.getCurrentTime();
         }
 
         // Detecta cambio externo de volumen y actualiza el slider
-        const currentVolume = player.getVolume();
+        currentVolume = player.getVolume();
         if (currentVolume !== previousVolume) {
             volumeSlider.value = currentVolume;
             previousVolume = currentVolume;
@@ -40,7 +40,22 @@ function onPlayerReady(event) {
         } else {
             muteBtn.textContent = "🔊";
         }
-    }, 500);
+    }, 1000);
+}
+
+function onPlayerStateChange(event){
+    if (event.data == YT.PlayerState.PLAYING) {
+        // btnPausa.innerHTML = ICON_PAUSE;
+        playPauseBtn.textContent = "⏸️";
+    } 
+    else if (event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED) {
+        // reproduciendo = false;
+        playPauseBtn.textContent = "▶️";
+        // btnPausa.innerHTML = ICON_PLAY;
+    }
+    if (event.data === YT.PlayerState.ENDED) {
+        clearInterval(updateInterval);
+    }
 }
 
 function onYouTubeIframeAPIReady() {
@@ -54,13 +69,15 @@ function onYouTubeIframeAPIReady() {
         },
         events: {
             onReady: onPlayerReady,
+            'onStateChange': onPlayerStateChange
         },
     });
 }
 
+
 // ▶️⏸️ Play/Pause
 playPauseBtn.addEventListener("click", () => {
-    const state = player.getPlayerState();
+    let state = player.getPlayerState();
     if (state === YT.PlayerState.PLAYING) {
         player.pauseVideo();
         playPauseBtn.textContent = "▶️";
@@ -96,6 +113,7 @@ muteBtn.addEventListener("click", () => {
 
 // ⏩ Barra de duración (seek)
 seekBar.addEventListener("input", () => {
-    const seekTo = seekBar.value;
+    let seekTo = seekBar.value;
+    console.log("AA")
     player.seekTo(seekTo, true);
 });
