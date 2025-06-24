@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../statics/styles/main.css">
     <title>Tests</title>
+    <script src="https://youtube.com/iframe_api"></script>
 </head>
 <body>
     <header>
@@ -14,7 +15,7 @@
     <div id="player"></div>
 
     <div class="controls-bar">
-        <button id="playPausebtn">⏸️</button> 
+        <button id="playPauseBtn">⏸️</button> 
         <label for="volumeSlider">Volumen:</label>
         <button type="text" id="muteBtn"></button> 
         <input type="range" max="100"  id="volumeSlider">
@@ -24,10 +25,9 @@
             <span id="duration">00:00</span>
         </span> -->
         <label for="seekBar">Duracion:</label>
-        <input type="range" min="0" max="100" value="0" id="seekBar">
     </div>
     
-    <script src="https://youtube.com/iframe_api"></script>
+    
     <script src="../dynamics/js/elementals.js"></script>
 </body>
 </html>

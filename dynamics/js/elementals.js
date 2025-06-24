@@ -1,44 +1,57 @@
+
+
+
+
+
 let player;
 let duration = 0;
-let lastVolume = 100;
-let previousVolume;
+let lastVolume;
+let previousVolume = 0;
 let updateInterval;
 
 const seekBar = document.getElementById("seekBar");
 const volumeSlider = document.getElementById("volumeSlider");
-const playPauseBtn = document.getElementById("playPausebtn");
-const muteBtn = document.getElementById("muteBtn");
+const playPauseBtn = document.getElementById("playPauseBtn");
 
-const vidDuration = document.getElementById("duration");
-const currentTimeSpan = document.getElementById("currentTime");
-let currentVolume
+function onPlayerReady(event){
+    duration = player.getDuration();
+    player.playVideo();
 
-function onPlayerReady(event) {
-    
+    seekBar.max = duration;
+    volumeSlider.value = player.getVolume();
+
+}
+//const canciones = [, "T8TtE-enslS"];
+function onYouTubeIframeAPIReady(){
+    player = new YT.Player("player", {
+        videoId: "T8TtE-enslA",
+        playerVars: {
+            controls: 0
+        },
+        events:{
+            onReady: onPlayerReady,
+        },
+
+        
+    });
 }
 
-function onPlayerStateChange(event){
-    
-}
 
-function onYouTubeIframeAPIReady() {
-    
-}
+//Play/Pause
+playPauseBtn.addEventListener("click", ()=>{
+    let state = player.getPlayerState();
+    if(state === YT.PlayerState.PLAYING){
+        player.pauseVideo();
 
-playPauseBtn.addEventListener("click", () => {
-    
+    } else {
+        player.playVideo();
+    }
 });
 
-volumeSlider.addEventListener("input", () => {
-    
-});
+//Volumen
 
-// 🔇 Mute/Unmute con botón
-muteBtn.addEventListener("click", () => {
-    
-});
 
-// ⏩ Barra de duración (seek)
-seekBar.addEventListener("input", () => {
-    
-});
+//Mute
+
+
+//duracion
